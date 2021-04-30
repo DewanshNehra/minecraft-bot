@@ -1,5 +1,6 @@
 const mineflayer = require('mineflayer')
 const fs = require('fs');
+const autoeat = require('mineflayer-auto-eat')
 let rawdata = fs.readFileSync('config.json');
 let data = JSON.parse(rawdata);
 var lasttime = -1;
@@ -96,5 +97,32 @@ bot.on('chat', (username, message) => {
       bot.chat(`I can't wake up: ${err.message}`)
     }
   }
+ // AUTO EAT 
+
+// Load the plugin
+bot.loadPlugin(autoeat)
+
+bot.once('spawn', () => {
+  bot.autoEat.options = {
+    priority: 'foodPoints',
+    startAt: 14,
+    bannedFood: []
+  }
+})
+// The bot eats food automatically and emits these events when it starts eating and stops eating.
+
+bot.on('autoeat_started', () => {
+  console.log('Auto Eat started!')
+})
+
+bot.on('autoeat_stopped', () => {
+  console.log('Auto Eat stopped!')
+})
+
+bot.on('health', () => {
+  if (bot.food === 20) bot.autoEat.disable()
+  // Disable the plugin if the bot is at 20 food points`
+  else bot.autoEat.enable() // Else enable the plugin again
+})
 
 
