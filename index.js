@@ -100,7 +100,7 @@ bot.on('chat', (username, message) => {
  // AUTO EAT 
 
 // Load the plugin
-bot.loadPlugin(autoeat)
+bot.loadPlugin(mineflayerAutoEat)
 
 bot.once('spawn', () => {
   bot.autoEat.options = {
